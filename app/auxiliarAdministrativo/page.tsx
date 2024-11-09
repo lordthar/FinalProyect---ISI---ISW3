@@ -52,7 +52,7 @@ function AuxiliarPage() {
     updateProspect(datosFormulario);
 
     let matricula = matriculas.filter((item) =>
-      item.id.toLowerCase().includes(id.toLowerCase())
+      item.id == id
     );
 
     matricula[0].nombre = nombre;

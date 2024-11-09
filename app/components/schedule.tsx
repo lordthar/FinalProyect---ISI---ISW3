@@ -1,6 +1,6 @@
 
-
 import React from 'react';
+import { getHorario } from '../lib/actions';
 
 interface ScheduleItem {
   day: string;
@@ -12,114 +12,61 @@ interface ScheduleProps {
   schedule: ScheduleItem[];
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ schedule }) => {
-  
+const Schedule: React.FC<ScheduleProps> = async ({ schedule }) => {
+
+  const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+  const horas = ['07:00:00', '09:00:00', '10:00:00', '11:00:00', '3:00 pm'];
+  const horario = await getHorario('1')
+
   return (
     <div className="container mx-auto p-8">
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
 
-        <thead>
-          <tr className="bg-blue-500 text-white">
-            <th className="border border-indigo-500 p-4">HORAS</th>
-            <th className="border border-indigo-500 p-4">LUNES</th>
-            <th className="border border-indigo-500 p-4">MARTES</th>
-            <th className="border border-indigo-500 p-4">MIERCOLES</th>
-            <th className="border border-indigo-500 p-4">JUEVES</th>
-            <th className="border border-indigo-500 p-4">VIERNES</th>
-            <th className="border border-indigo-500 p-4">SÁBADO</th>
-            <th className="border border-indigo-500 p-4">DOMINGO</th>
-          </tr>
-        </thead>
+          <thead>
+            <tr className="bg-blue-500 text-white">
+              <th className="border border-indigo-500 p-4">HORAS</th>
+              <th className="border border-indigo-500 p-4">LUNES</th>
+              <th className="border border-indigo-500 p-4">MARTES</th>
+              <th className="border border-indigo-500 p-4">MIERCOLES</th>
+              <th className="border border-indigo-500 p-4">JUEVES</th>
+              <th className="border border-indigo-500 p-4">VIERNES</th>
+              <th className="border border-indigo-500 p-4">SÁBADO</th>
+              <th className="border border-indigo-500 p-4">DOMINGO</th>
+            </tr>
+          </thead>
 
 
-        <tbody>
-          <tr className="odd:bg-gray-100 even:bg-white text-gray-700">
-            <td className="border border-gray-300 p-4 text-center font-semibold bg-indigo-100">7:00 am</td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12340</div>
-              <div>ADMINISTRACIÓN DE INFRAESTRUCTURA DE TI</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">08/08/24 - 28/11/24</div>
-              <div className="text-sm text-gray-600">Aula: D4-403 AULA</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12338</div>
-              <div>BASES DE DATOS II</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">06/08/24 - 26/11/24</div>
-              <div className="text-sm text-gray-600">Aula: D4-403</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12339</div>
-              <div>INGENIERÍA DE SOFTWARE III</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">07/08/24 - 27/11/24</div>
-              <div className="text-sm text-gray-600">Aula: D4-302</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12335</div>
-              <div>INGENIERÍA ECONÓMICA</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">08/08/24 - 28/11/24</div>
-              <div className="text-sm text-gray-600">Lab: D4-Laboratorio</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12336</div>
-              <div>FUNDAMENTOS DE HCI</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">09/08/24 - 29/11/24</div>
-              <div className="text-sm text-gray-600">Lab: D4-Laboratorio</div>
-            </td>
-            <td className="border border-gray-300 p-4 text-center text-gray-400">-</td>
-            <td className="border border-gray-300 p-4 text-center text-gray-400">-</td>
-          </tr>
-
-          <tr className="odd:bg-gray-100 even:bg-white text-gray-700">
-            <td className="border border-gray-300 p-4 text-center font-semibold bg-indigo-100">9:00 am</td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12339</div>
-              <div>INGENIERÍA DE SOFTWARE III</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">05/08/24 - 25/11/24</div>
-              <div className="text-sm text-gray-600">Aula: F4-SALA M</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12337</div>
-              <div>SEMINARIO DE INVESTIGACIÓN</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">06/08/24 - 26/11/24</div>
-              <div className="text-sm text-gray-600">Aula: D4-302</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12336</div>
-              <div>FUNDAMENTOS DE HCI</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">07/08/24 - 27/11/24</div>
-              <div className="text-sm text-gray-600">Aula: D4-413</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12340</div>
-              <div>ADMINISTRACIÓN DE INFRAESTRUCTURA DE TI</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">08/08/24 - 28/11/24</div>
-              <div className="text-sm text-gray-600">Aula: D4-403</div>
-            </td>
-            <td className="border border-gray-300 p-4">
-              <div className="text-indigo-700 font-semibold">Cod. 12338</div>
-              <div>BASES DE DATOS II</div>
-              <div className="text-sm text-gray-500">Grupo: 01D SubGrupo.</div>
-              <div className="text-sm text-gray-500">08/08/24 - 29/11/24</div>
-              <div className="text-sm text-gray-600">Aula: D4-317</div>
-            </td>
-            <td className="border border-gray-300 p-4 text-center text-gray-400">-</td>
-            <td className="border border-gray-300 p-4 text-center text-gray-400">-</td>
-          </tr>
-
-        </tbody>
-      </table>
+          <tbody>
+            {horas.map((hora, rowIndex) => (
+              <tr key={rowIndex} className="odd:bg-gray-100 even:bg-white text-gray-700">
+                <td className="border border-gray-300 p-4 text-center font-semibold bg-indigo-100">{hora}</td>
+                {dias.map((dia, colIndex) => (
+                  <td key={colIndex} className="border border-gray-300 p-4">
+                    {horario.map((item, index) => (
+                      <div key={index}>
+                        {dia == item.dia && horas[rowIndex] == item.horainicio
+                          ? (
+                            <div>
+                              <div className="text-indigo-700 font-semibold">Cod. {item.codigo}</div>
+                              <div>{item.nombre}</div>
+                              <div className="text-sm text-gray-500">Grupo: {item.grupo}</div>
+                              <div className="text-sm text-gray-500">{item.fechaInicio.toLocaleDateString()} - {item.fechaFin.toLocaleDateString()}</div>
+                              <div className="text-sm text-gray-600">Aula: {item.aula}</div>
+                              <div className="text-sm text-gray-600">Aula: {item.horainicio}</div>
+                            </div>
+                          ) : null
+                        }
+                      </div>
+                    ))}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
   );
 };
 

@@ -47,6 +47,7 @@ export const updateProspect = async (data: Matricula) => {
   const { id, nombre, apellido, cedula, telefonos, correo, curso, libretamilitar, certificados, fotousuario } = data
   try {
     const query = await conn.begin(async conn => {
+      console.log(data)
       await conn`
       UPDATE matricula
         SET nombre = ${nombre}, 
@@ -111,8 +112,17 @@ export async function getSolicitudes() {
 }
 
 export async function getUsuarios() {
-  const solicitudes = await conn`SELECT * FROM usuarios`
-  return solicitudes;
+  const usuarios = await conn`SELECT * FROM usuarios`
+  return usuarios;
+}
+
+export async function getHorario(codigoCurso: string) {
+  const horario = await conn`
+  SELECT dh.dia, dh.horainicio, dh.horafin, h."fechaInicio", h."fechaFin", c.nombre FROM detallehorario dh
+  JOIN horario h ON dh.idhorario = h.idhorario
+  JOIN curso c ON h.idhorario = c.idhorario
+  WHERE c.codigo = ${codigoCurso}`;
+  return horario;
 }
 
 export async function authenticate(
