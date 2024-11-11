@@ -18,10 +18,10 @@ function AuxiliarPage() {
     cedula: '',
     telefonos: '',
     correo: '',
+    password: '',
     curso: '',
     libretamilitar: '',
-    certificados: '',
-    fotousuario: ''
+    certificados: ''
   });
 
   const [id, setId] = useState('');
@@ -30,10 +30,10 @@ function AuxiliarPage() {
   const [cedula, setCedula] = useState('');
   const [telefonos, setTelefonos] = useState('');
   const [correo, setCorreo] = useState('');
+  const [password, setPassword] = useState('');
   const [curso, setCurso] = useState('seleciona un curso');
   const [libretamilitar, setLibretaMilitar] = useState('');
   const [certificados, setCertificados] = useState('');
-  const [fotousuario, setFotoUsuario] = useState('');
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,9 +45,9 @@ function AuxiliarPage() {
       telefonos,
       correo,
       curso,
+      password,
       libretamilitar,
-      certificados,
-      fotousuario,
+      certificados
     }
     updateProspect(datosFormulario);
 
@@ -60,10 +60,10 @@ function AuxiliarPage() {
     matricula[0].cedula = cedula;
     matricula[0].telefonos = telefonos;
     matricula[0].correo = correo;
+    matricula[0].password = password;
     matricula[0].curso = curso;
     matricula[0].libretamilitar = libretamilitar;
     matricula[0].certificados = certificados;
-    matricula[0].fotousuario = fotousuario;
 
     setShowModal(false);
     triggerAlert('success', 'actualizacion exitosa!')
@@ -90,10 +90,10 @@ function AuxiliarPage() {
     setCedula(matricula.cedula);
     setTelefonos(matricula.telefonos);
     setCorreo(matricula.correo);
+    setCurso(matricula.password);
     setCurso(matricula.curso);
     setLibretaMilitar(matricula.libretamilitar);
     setCertificados(matricula.certificados);
-    setFotoUsuario(matricula.fotousuario);
 
     setMatricula(matricula);
   }

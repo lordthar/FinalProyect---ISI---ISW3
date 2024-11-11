@@ -10,10 +10,10 @@ function matricula() {
   const [cedula, setCedula] = useState('');
   const [telefonos, setTelefonos] = useState('');
   const [correo, setCorreo] = useState('');
+  const [password, setPassword] = useState('');
   const [curso, setCurso] = useState('seleciona un curso');
-  const [libretaMilitar, setLibretaMilitar] = useState('');
+  const [libretamilitar, setLibretaMilitar] = useState('');
   const [certificados, setCertificados] = useState('');
-  const [fotoUsuario, setFotoUsuario] = useState('');
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) =>  {
     event.preventDefault();
@@ -24,10 +24,10 @@ function matricula() {
       cedula,
       telefonos,
       correo,
+      password,
       curso,
-      libretaMilitar,
-      certificados,
-      fotoUsuario
+      libretamilitar,
+      certificados
     }
     createProspect(datosFormulario);
   };
@@ -64,6 +64,14 @@ function matricula() {
         <input id="telefono" name="telefono" type="text" required value={telefonos} onChange={(e) => setTelefonos(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
       </div>
       <div>
+        <label htmlFor="correo" className="block text-sm font-medium text-gray-700">Correo</label>
+        <input id="correo" name="correo" type="text" required value={correo} onChange={(e) => setCorreo(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+      </div>
+      <div>
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Contraseña</label>
+        <input id="password" name="password" type="text" required value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+      </div>
+      <div>
         <label htmlFor="curso" className="block text-sm font-medium text-gray-700">Curso</label>
         <select id="curso" name="curso" required value={curso} onChange={(e) => setCurso(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
           <option disabled value="">Selecciona un curso</option>
@@ -75,7 +83,7 @@ function matricula() {
       </div>
       <div>
         <label htmlFor="libreta_militar" className="block text-sm font-medium text-gray-700">Libreta Militar</label>
-        <select id="libreta_militar" name="libreta_militar" required value={libretaMilitar} onChange={(e) => setLibretaMilitar(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        <select id="libreta_militar" name="libreta_militar" required value={libretamilitar} onChange={(e) => setLibretaMilitar(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
           <option disabled value="">¿Tienes libreta militar?</option>
           <option value="Si">Sí</option>
           <option value="No">No</option>

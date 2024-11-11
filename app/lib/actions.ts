@@ -8,12 +8,12 @@ let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
 
 const conn = postgres({
-  host: '192.168.100.65',
-  database: 'isidatabase',
-  username: 'postgres',
-  password: 'example',
+  host: 'ep-late-darkness-a5szvtrq.us-east-2.aws.neon.tech',
+  database: 'ISI-database',
+  username: 'ISI-database_owner',
+  password:'8K3pQqFaeRIh',
   port: 5432,
-  ssl: false,
+  ssl: "require",
 });
 
 export async function fetchUser(username: string) {
@@ -28,15 +28,24 @@ export async function fetchUser(username: string) {
 }
 
 export const createProspect = async (data: Matricula) => {
-  const { id, nombre, apellido, cedula, telefonos, correo, curso, libretamilitar: libretaMilitar, certificados, fotousuario: fotoUsuario } = data
+  const { id, nombre, apellido, cedula, telefonos, correo, password, curso, libretamilitar, certificados } = data
+  const idmatricula = Date.now();
   try {
     const query = await conn.begin(async conn => {
+      
       await conn`
-      INSERT INTO matricula(id, nombre, apellido, correo, cedula, telefonos, curso, libretaMilitar, certificados, fotoUsuario)
-      VALUES (${id}, ${nombre}, ${apellido}, ${correo}, ${cedula}, ${telefonos}, ${curso}, ${libretaMilitar}, ${certificados}, ${fotoUsuario});`
-      return true
-    })
+        INSERT INTO alumno(idalumno, nombre, apellido, password, correo, cedula, telefonos, libretaMilitar, certificados)
+        VALUES (${cedula}, ${nombre}, ${apellido}, ${password}, ${correo}, ${cedula}, ${telefonos}, ${libretamilitar}, ${certificados});`
 
+      const idcurso = (await conn`
+        SELECT codigo FROM curso WHERE nombre = ${curso};`)[0].codigo
+
+
+      await conn`
+        INSERT INTO matricula(id, idalumno, idcurso)
+        VALUES (${idmatricula}, ${cedula}, ${idcurso});`
+    })
+    
     return query
   } catch (error) {
     throw error
@@ -44,22 +53,31 @@ export const createProspect = async (data: Matricula) => {
 }
 
 export const updateProspect = async (data: Matricula) => {
-  const { id, nombre, apellido, cedula, telefonos, correo, curso, libretamilitar, certificados, fotousuario } = data
+  const { id, nombre, apellido, cedula, telefonos, correo, password, curso, libretamilitar, certificados } = data
   try {
     const query = await conn.begin(async conn => {
-      console.log(data)
+      const matricula = await conn`
+      SELECT * FROM matricula WHERE id  = ${id};`
+      
       await conn`
-      UPDATE matricula
+      UPDATE alumno
         SET nombre = ${nombre}, 
         apellido = ${apellido}, 
         cedula = ${cedula}, 
         telefonos = ${telefonos}, 
-        correo = ${correo}, 
-        curso = ${curso}, 
+        correo = ${correo},
+        password = ${password},
         libretaMilitar = ${libretamilitar}, 
-        certificados = ${certificados}, 
-        fotoUsuario = ${fotousuario}
-      WHERE id  = ${id};`
+        certificados = ${certificados}
+      WHERE idalumno = ${matricula[0].idalumno}`
+
+      const idcurso = (await conn`
+        SELECT codigo FROM curso WHERE nombre = ${curso};`)[0].codigo
+
+      await conn`
+        UPDATE matricula
+          SET idcurso = ${idcurso}
+        WHERE id = ${id}`
 
       return true
     })
@@ -102,7 +120,11 @@ export const createProspectSolicitud = async (data: Solicitud) => {
 }
 
 export async function getMatriculas() {
-  const matriculas: Matricula[] = await conn`SELECT * FROM Matricula;`
+  const matriculas: Matricula[] = await conn`
+    SELECT m.id, a.nombre, a.apellido, a.cedula, a.telefonos, a.correo, c.nombre AS curso, a.libretamilitar, a.certificados 
+    FROM matricula m
+    JOIN alumno a on a.idalumno = m.idalumno
+    JOIN curso c on c.codigo = m.idcurso;`
   return matriculas;
 }
 
@@ -120,7 +142,7 @@ export async function getHorario(codigoCurso: string) {
   const horario = await conn`
   SELECT dh.dia, dh.horainicio, dh.horafin, h."fechaInicio", h."fechaFin", c.nombre FROM detallehorario dh
   JOIN horario h ON dh.idhorario = h.idhorario
-  JOIN curso c ON h.idhorario = c.idhorario
+  JOIN curso c ON h.idcurso = c.codigo
   WHERE c.codigo = ${codigoCurso}`;
   return horario;
 }

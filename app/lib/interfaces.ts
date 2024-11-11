@@ -12,10 +12,10 @@ interface Matricula{
     cedula:string,
     telefonos:string,
     correo:string,
+    password:string,
     curso:string,
     libretamilitar:string,
-    certificados:string,
-    fotousuario:string
+    certificados:string
 }
 
 interface Solicitud{
