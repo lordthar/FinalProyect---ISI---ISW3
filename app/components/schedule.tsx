@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { getHorario } from '../lib/actions';
+import { fetchMatricula, getHorario } from '../lib/actions';
+import { cookies } from 'next/headers';
 
 interface ScheduleItem {
   day: string;
@@ -13,10 +14,15 @@ interface ScheduleProps {
 }
 
 const Schedule: React.FC<ScheduleProps> = async ({ schedule }) => {
-
   const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
-  const horas = ['07:00:00', '09:00:00', '10:00:00', '11:00:00', '3:00 pm'];
-  const horario = await getHorario('1')
+  const horas = ['07:00:00', '09:00:00', '10:00:00', '11:00:00', '13:00:00', '15:00:00'];
+
+  const cookieStore = cookies()
+  const idEstudiante = cookieStore.get("idestudiante")
+
+  const matricula = await fetchMatricula(idEstudiante?.value)  
+
+  const horario = await getHorario(matricula.idcurso)
 
   return (
     <div className="container mx-auto p-8">
@@ -48,12 +54,12 @@ const Schedule: React.FC<ScheduleProps> = async ({ schedule }) => {
                         {dia == item.dia && horas[rowIndex] == item.horainicio
                           ? (
                             <div>
-                              <div className="text-indigo-700 font-semibold">Cod. {item.codigo}</div>
+                              <div className="text-indigo-700 font-semibold">Cod. {item.id}</div>
                               <div>{item.nombre}</div>
                               <div className="text-sm text-gray-500">Grupo: {item.grupo}</div>
                               <div className="text-sm text-gray-500">{item.fechaInicio.toLocaleDateString()} - {item.fechaFin.toLocaleDateString()}</div>
                               <div className="text-sm text-gray-600">Aula: {item.aula}</div>
-                              <div className="text-sm text-gray-600">Aula: {item.horainicio}</div>
+                              <div className="text-sm text-gray-600">Hora inico: {item.horainicio}</div>
                             </div>
                           ) : null
                         }

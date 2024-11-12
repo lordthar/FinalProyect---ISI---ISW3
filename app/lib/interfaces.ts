@@ -5,6 +5,13 @@ interface User{
     password: string
 }
 
+interface Student{
+    id: string,
+    nombre: string,
+    username: string,
+    password: string
+}
+
 interface Matricula{
     id:string,
     nombre:string,

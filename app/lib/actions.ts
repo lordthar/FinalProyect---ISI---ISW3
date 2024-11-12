@@ -1,8 +1,10 @@
 "use server"
 
 import { signIn } from '@/auth';
+import { signIn as signInA} from '@/authA';
 import { AuthError } from 'next-auth';
 import postgres from 'postgres';
+import { cookies } from 'next/headers';
 
 let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
@@ -13,8 +15,24 @@ const conn = postgres({
   username: 'ISI-database_owner',
   password:'8K3pQqFaeRIh',
   port: 5432,
-  ssl: "require",
+  ssl: false,
 });
+
+export async function fetchMatricula(idalumno: string | undefined) {
+  if (idalumno === undefined) return {
+    id: '',
+    idalumno: '',
+    idcurso: '' 
+  };
+  
+  const [matricula] = await conn`select * from matricula where idalumno=${idalumno}`
+  const userObject = {
+    id: matricula.id,
+    idalumno: matricula.idalumno,
+    idcurso: matricula.idcurso
+  }
+  return userObject;
+}
 
 export async function fetchUser(username: string) {
   const [user] = await conn`select * from usuarios where username=${username}`
@@ -25,6 +43,23 @@ export async function fetchUser(username: string) {
     password: user.password
   }
   return userObject;
+}
+
+export async function fetchStudent(name: string) {
+  const [user] = await conn`select * from alumno where correo=${name}`
+  const studentObject = {
+    id: user.idalumno,
+    nombre: user.nombre,
+    username: user.correo,
+    password: user.password
+  }
+
+  const coockieStore = cookies()
+  coockieStore.set("idestudiante", studentObject.id, {
+    httpOnly: true
+  })
+
+  return studentObject;
 }
 
 export const createProspect = async (data: Matricula) => {
@@ -154,7 +189,6 @@ export async function authenticate(
   try {
     await signIn('credentials', formData);
   } catch (error) {
-    console.log(error);
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
@@ -162,7 +196,25 @@ export async function authenticate(
         default:
           return 'Something went wrong.';
       }
+    }
+    throw error;
+  }
+}
 
+export async function authenticateStudent(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signInA('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
     }
     throw error;
   }

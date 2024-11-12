@@ -1,8 +1,5 @@
-import Link from "next/link";
-import { getMatriculas } from '../lib/actions';
 
 const NavBarAlum = async () => {
-  const matriculas = await getMatriculas();
   
 
   return (
