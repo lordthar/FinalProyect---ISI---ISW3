@@ -15,21 +15,23 @@ const conn = postgres({
   username: 'ISI-database_owner',
   password:'8K3pQqFaeRIh',
   port: 5432,
-  ssl: false,
+  ssl: "require",
 });
 
 export async function fetchMatricula(idalumno: string | undefined) {
   if (idalumno === undefined) return {
     id: '',
     idalumno: '',
-    idcurso: '' 
+    idcurso: '', 
+    isactivo: ''
   };
   
   const [matricula] = await conn`select * from matricula where idalumno=${idalumno}`
   const userObject = {
     id: matricula.id,
     idalumno: matricula.idalumno,
-    idcurso: matricula.idcurso
+    idcurso: matricula.idcurso,
+    isactivo: matricula.isactivo
   }
   return userObject;
 }
@@ -42,6 +44,12 @@ export async function fetchUser(username: string) {
     username: user.username,
     password: user.password
   }
+
+  const cookieStore = cookies()
+  cookieStore.set("userUsername", user.username, {
+    httpOnly: true
+  })
+
   return userObject;
 }
 
@@ -54,8 +62,8 @@ export async function fetchStudent(name: string) {
     password: user.password
   }
 
-  const coockieStore = cookies()
-  coockieStore.set("idestudiante", studentObject.id, {
+  const cookieStore = cookies()
+  cookieStore.set("idestudiante", studentObject.id, {
     httpOnly: true
   })
 
@@ -63,7 +71,7 @@ export async function fetchStudent(name: string) {
 }
 
 export const createProspect = async (data: Matricula) => {
-  const { id, nombre, apellido, cedula, telefonos, correo, password, curso, libretamilitar, certificados } = data
+  const { id, nombre, apellido, cedula, telefonos, correo, password, curso, libretamilitar, certificados, isactivo } = data
   const idmatricula = Date.now();
   try {
     const query = await conn.begin(async conn => {
@@ -77,8 +85,8 @@ export const createProspect = async (data: Matricula) => {
 
 
       await conn`
-        INSERT INTO matricula(id, idalumno, idcurso)
-        VALUES (${idmatricula}, ${cedula}, ${idcurso});`
+        INSERT INTO matricula(id, idalumno, idcurso, isactivo)
+        VALUES (${idmatricula}, ${cedula}, ${idcurso}, ${isactivo});`
     })
     
     return query
@@ -88,7 +96,7 @@ export const createProspect = async (data: Matricula) => {
 }
 
 export const updateProspect = async (data: Matricula) => {
-  const { id, nombre, apellido, cedula, telefonos, correo, password, curso, libretamilitar, certificados } = data
+  const { id, nombre, apellido, cedula, telefonos, correo, password, curso, libretamilitar, certificados, isactivo } = data
   try {
     const query = await conn.begin(async conn => {
       const matricula = await conn`
@@ -111,7 +119,8 @@ export const updateProspect = async (data: Matricula) => {
 
       await conn`
         UPDATE matricula
-          SET idcurso = ${idcurso}
+          SET idcurso = ${idcurso},
+          isactivo = ${isactivo}
         WHERE id = ${id}`
 
       return true
@@ -127,7 +136,8 @@ export const eliminarProspect = async (data: string) => {
   try {
     const query = await conn.begin(async conn => {
       await conn`
-      DELETE FROM matricula 
+      UPDATE matricula
+          SET isactivo = false 
       where id = ${id};
     `;
       return true;
@@ -156,11 +166,17 @@ export const createProspectSolicitud = async (data: Solicitud) => {
 
 export async function getMatriculas() {
   const matriculas: Matricula[] = await conn`
-    SELECT m.id, a.nombre, a.apellido, a.cedula, a.telefonos, a.correo, c.nombre AS curso, a.libretamilitar, a.certificados 
+    SELECT m.id, a.nombre, a.apellido, a.cedula, a.telefonos, a.correo, c.nombre AS curso, a.libretamilitar, a.certificados, m.isactivo 
     FROM matricula m
-    JOIN alumno a on a.idalumno = m.idalumno
-    JOIN curso c on c.codigo = m.idcurso;`
+      JOIN alumno a on a.idalumno = m.idalumno
+      JOIN curso c on c.codigo = m.idcurso
+    WHERE m.isactivo = true;`
   return matriculas;
+}
+
+export async function getInforme() {
+  const informe = await conn`SELECT * FROM informe;`
+  return informe;
 }
 
 export async function getSolicitudes() {
@@ -172,6 +188,14 @@ export async function getUsuarios() {
   const usuarios = await conn`SELECT * FROM usuarios`
   return usuarios;
 }
+
+export async function getUser(username: string | undefined) {
+  if (username === undefined) return;
+  const usuarios = await conn`SELECT * FROM usuarios WHERE username = ${username}`;
+  
+  return usuarios[0]; // Retorna el primer y único resultado
+}
+
 
 export async function getHorario(codigoCurso: string) {
   const horario = await conn`

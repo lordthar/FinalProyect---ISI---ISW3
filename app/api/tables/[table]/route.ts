@@ -1,4 +1,4 @@
-import { getMatriculas, getUsuarios } from "@/app/lib/actions"
+import { getInforme } from "@/app/lib/actions"
 import { type NextRequest } from "next/server"
 import * as XLSX from 'xlsx'
 
@@ -32,18 +32,15 @@ export async function GET(
         // ** Using static data in this example
 
         // Loading example data 
-        const tableMatriculas = await getMatriculas();
-        const tableUsuarios = await getUsuarios();
+        const tableMatriculas = await getInforme();
 
 
         const matriculasSheet = XLSX.utils.json_to_sheet(tableMatriculas)
-        const usuariosSheet = XLSX.utils.json_to_sheet(tableUsuarios)
 
         if (format === 'xlsx') {
             const workbook = XLSX.utils.book_new()
 
-            XLSX.utils.book_append_sheet(workbook, matriculasSheet, 'Matriculas')
-            XLSX.utils.book_append_sheet(workbook, usuariosSheet, 'Usuarios')
+            XLSX.utils.book_append_sheet(workbook, matriculasSheet, 'Dash')
 
             const buf = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" })
 

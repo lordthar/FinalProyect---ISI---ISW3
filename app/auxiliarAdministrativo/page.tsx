@@ -21,7 +21,8 @@ function AuxiliarPage() {
     password: '',
     curso: '',
     libretamilitar: '',
-    certificados: ''
+    certificados: '',
+    isactivo: true
   });
 
   const [id, setId] = useState('');
@@ -34,6 +35,7 @@ function AuxiliarPage() {
   const [curso, setCurso] = useState('seleciona un curso');
   const [libretamilitar, setLibretaMilitar] = useState('');
   const [certificados, setCertificados] = useState('');
+  const [isactivo, setIsactivo] = useState(true);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,7 +49,8 @@ function AuxiliarPage() {
       curso,
       password,
       libretamilitar,
-      certificados
+      certificados,
+      isactivo
     }
     updateProspect(datosFormulario);
 
@@ -64,6 +67,7 @@ function AuxiliarPage() {
     matricula[0].curso = curso;
     matricula[0].libretamilitar = libretamilitar;
     matricula[0].certificados = certificados;
+    matricula[0].isactivo = isactivo;
 
     setShowModal(false);
     triggerAlert('success', 'actualizacion exitosa!')
@@ -94,6 +98,7 @@ function AuxiliarPage() {
     setCurso(matricula.curso);
     setLibretaMilitar(matricula.libretamilitar);
     setCertificados(matricula.certificados);
+    setIsactivo(matricula.isactivo)
 
     setMatricula(matricula);
   }
@@ -157,7 +162,13 @@ function AuxiliarPage() {
       </div>
 
       {showAlert && <Alert type={alertType} message={alertMessage} />}
-      <Link className="hover:underline bg-cyan-500" href={`/api/tables/matricula?format=xlsx`}>XLSX</Link>
+
+      <button
+        className="hover:underline bg-cyan-500 text-white px-4 py-2 m-2 rounded"
+        onClick={() => window.location.href = `/api/tables/matricula?format=xlsx`}
+      >
+        Descargar el reporte en XLSX
+      </button>
 
       {showModal ? (
         <div className="flex bg-slate-900 fixed justify-center flex-col items-center top-0 left-0 h-screen w-full z-50 bg-opacity-70">

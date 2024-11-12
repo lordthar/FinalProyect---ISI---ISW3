@@ -20,6 +20,7 @@ interface Matricula{
     telefonos:string,
     correo:string,
     password:string,
+    isactivo: boolean,
     curso:string,
     libretamilitar:string,
     certificados:string

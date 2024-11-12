@@ -14,6 +14,7 @@ function matricula() {
   const [curso, setCurso] = useState('seleciona un curso');
   const [libretamilitar, setLibretaMilitar] = useState('');
   const [certificados, setCertificados] = useState('');
+  const [isactivo, setIsactivo] = useState(true);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) =>  {
     event.preventDefault();
@@ -27,7 +28,8 @@ function matricula() {
       password,
       curso,
       libretamilitar,
-      certificados
+      certificados,
+      isactivo
     }
     createProspect(datosFormulario);
   };
@@ -69,7 +71,7 @@ function matricula() {
       </div>
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700">Contraseña</label>
-        <input id="password" name="password" type="text" required value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+        <input id="password" name="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
       </div>
       <div>
         <label htmlFor="curso" className="block text-sm font-medium text-gray-700">Curso</label>
