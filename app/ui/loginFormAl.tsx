@@ -22,7 +22,7 @@ export default function LoginForm() {
             <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">Login Alumnos</h2>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="username">
-                Usuario
+                Correo
               </label>
               <input
                 className="shadow appearance-none border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400"
