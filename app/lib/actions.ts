@@ -54,9 +54,6 @@ export async function fetchUser(username: string) {
     password: user.password
   }
 
-  console.log(user);
-
-
   const cookieStore = cookies()
   cookieStore.set("userUsername", user.username, {
     httpOnly: true
@@ -65,7 +62,14 @@ export async function fetchUser(username: string) {
   return userObject;
 }
 
-export async function fetchStudent(name: string) {
+export async function fetchStudent(correo: string | undefined) {
+  if (correo === undefined) return {
+    id: '',
+    nombre: '',
+    username: '',
+    password: ''
+  };
+
   if (!process.env.DATABASE_URL)
     throw new Error("DATABASE_URL no está definida en las variables de entorno");
 
@@ -73,7 +77,7 @@ export async function fetchStudent(name: string) {
   const [user] = await sql`
     select * from alumno a
       JOIN matricula m ON a.idalumno = m.idalumno 
-    where a.correo=${name} AND m.isactivo = true;
+    where a.correo=${correo} AND m.isactivo = true;
   `
   const studentObject = {
     id: user.idalumno,
@@ -242,6 +246,17 @@ export async function getUser(username: string | undefined) {
 
   const sql = neon(process.env.DATABASE_URL);
   const usuarios = await sql`SELECT * FROM usuarios WHERE username = ${username}`;
+
+  return usuarios[0]; // Retorna el primer y único resultado
+}
+
+export async function getStudent(id: string | undefined) {
+  if (id === undefined) return;
+  if (!process.env.DATABASE_URL)
+    throw new Error("DATABASE_URL no está definida en las variables de entorno");
+
+  const sql = neon(process.env.DATABASE_URL);
+  const usuarios = await sql`SELECT * FROM alumno WHERE idalumno = ${id}`;
 
   return usuarios[0]; // Retorna el primer y único resultado
 }

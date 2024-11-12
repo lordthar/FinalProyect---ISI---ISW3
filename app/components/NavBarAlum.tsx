@@ -1,5 +1,10 @@
+import { cookies } from "next/headers";
+import { fetchStudent, getStudent } from "../lib/actions";
 
 const NavBarAlum = async () => {
+  const cookiesAlumno = cookies()
+  const idAlumno = cookiesAlumno.get("idestudiante")
+  const alumno = await getStudent(idAlumno?.value);
   
 
   return (
@@ -10,7 +15,7 @@ const NavBarAlum = async () => {
           <span className="text-white text-2xl font-bold">ISI</span>
         </div>
         <div className="text-center">
-          <p className="text-white text-xl font-semibold">Home de Alumno</p>
+          <p className="text-white text-xl font-semibold">Home de {alumno?.nombre}</p>
         </div>
         {(
           <div className="text-center">
