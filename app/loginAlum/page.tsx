@@ -3,7 +3,7 @@ import LoginFormAl from "../ui/loginFormAl";
 
 
 
-export default function() {
+export default function loginAlumn() {
     return (
       <LoginFormAl></LoginFormAl>
     )

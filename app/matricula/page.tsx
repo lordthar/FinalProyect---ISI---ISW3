@@ -4,7 +4,7 @@ import { createProspect } from '../lib/actions';
 import { v4 as uuid } from 'uuid';
 import Alert from '../components/alert';
 
-function matricula() {
+function Matricula() {
 
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -143,4 +143,4 @@ function matricula() {
 }
 
 
-export default matricula
+export default Matricula

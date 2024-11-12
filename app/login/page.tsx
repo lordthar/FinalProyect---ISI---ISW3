@@ -3,7 +3,7 @@ import LoginForm from "../ui/loginForm";
 
 
 
-export default function(){
+export default function login(){
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
