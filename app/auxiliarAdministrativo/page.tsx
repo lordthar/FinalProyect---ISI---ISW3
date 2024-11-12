@@ -7,7 +7,7 @@ import Alert from '../components/alert';
 let status: string | null = null;
 
 function AuxiliarPage() {
-  const [matriculas, setMatriculas] = useState<Matricula[]>([]);
+  const [matriculas, setMatriculas] = useState<any[]>([]);
   const [search, setSearch] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -94,7 +94,7 @@ function AuxiliarPage() {
     setCedula(matricula.cedula);
     setTelefonos(matricula.telefonos);
     setCorreo(matricula.correo);
-    setCurso(matricula.password);
+    setPassword(matricula.password);
     setCurso(matricula.curso);
     setLibretaMilitar(matricula.libretamilitar);
     setCertificados(matricula.certificados);

@@ -7,12 +7,11 @@ import { fetchStudent } from './app/lib/actions';
  
 async function getStudent(value: string): Promise<Student | undefined> {
   try {
-    const user= await fetchStudent(value)
+    const user= await fetchStudent(value)    
     return user;
     
   } catch (error) {
-    console.error('Failed to fetch student:', error);
-    throw new Error('Failed to fetch student.');
+    //throw new Error('Failed to fetch student.');
   }
 }
  
