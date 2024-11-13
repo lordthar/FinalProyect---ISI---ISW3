@@ -104,17 +104,18 @@ export const createProspect = async (data: Matricula) => {
   try {
 
     await sql`
+    WITH nuevo_alumno AS (
         INSERT INTO alumno(idalumno, nombre, apellido, password, correo, cedula, telefonos, libretaMilitar, certificados)
-        VALUES (${cedula}, ${nombre}, ${apellido}, ${password}, ${correo}, ${cedula}, ${telefonos}, ${libretamilitar}, ${certificados});`
-
-    const idcurso = (await sql`
-        SELECT codigo FROM curso WHERE nombre = ${curso};`)[0].codigo
-
-
-    await sql`
-        INSERT INTO matricula(id, idalumno, idcurso, isactivo)
-        VALUES (${idmatricula}, ${cedula}, ${idcurso}, ${isactivo});`
-
+        VALUES (${cedula}, ${nombre}, ${apellido}, ${password}, ${correo}, ${cedula}, ${telefonos}, ${libretamilitar}, ${certificados})
+        RETURNING idalumno
+    )
+    INSERT INTO matricula(id, idalumno, idcurso, isactivo)
+    VALUES (
+        ${idmatricula},
+        (SELECT idalumno FROM nuevo_alumno),
+        (SELECT codigo FROM curso WHERE nombre = ${curso}),
+        ${isactivo}
+    );`
 
     return true
   } catch (error) {
