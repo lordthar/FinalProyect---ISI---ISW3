@@ -56,10 +56,11 @@ const Schedule: React.FC<ScheduleProps> = async ({ schedule }) => {
                             <div>
                               <div className="text-indigo-700 font-semibold">Cod. {item.id}</div>
                               <div>{item.nombre}</div>
-                              <div className="text-sm text-gray-500">Grupo: {item.grupo}</div>
                               <div className="text-sm text-gray-500">{item.fechaInicio.toLocaleDateString()} - {item.fechaFin.toLocaleDateString()}</div>
-                              <div className="text-sm text-gray-600">Aula: {item.aula}</div>
-                              <div className="text-sm text-gray-600">Hora inico: {item.horainicio}</div>
+                              <div className="text-sm text-gray-600">Aula: { 
+                              item.nombre === 'Supervisor' ||  item.nombre === 'supervisor'? 
+                            'C-201' : 'I-108'}</div>
+                              <div className="text-sm text-gray-600">Hora inicio: {item.horainicio}</div>
                             </div>
                           ) : null
                         }
