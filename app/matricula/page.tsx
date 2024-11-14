@@ -47,9 +47,14 @@ function Matricula() {
       certificados,
       isactivo
     }
-    createProspect(datosFormulario);
-    triggerAlert('success', 'Matricula creada exitosamente!');
-    limpiarCampos();
+    
+    try {
+      await createProspect(datosFormulario);
+      triggerAlert('success', 'Matricula creada exitosamente!');
+      limpiarCampos();
+    } catch (error) {
+      triggerAlert('error', ''+ error);
+    }
   };
 
   function limpiarCampos() {

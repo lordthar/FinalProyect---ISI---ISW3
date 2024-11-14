@@ -3,7 +3,6 @@
 import { signIn } from '@/auth';
 import { signIn as signInA } from '@/authA';
 import { AuthError } from 'next-auth';
-import postgres from 'postgres';
 import { cookies } from 'next/headers';
 import { neon } from "@neondatabase/serverless";
 
@@ -118,7 +117,10 @@ export const createProspect = async (data: Matricula) => {
     );`
 
     return true
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message.includes("duplicate key value")) {
+      throw new Error("El alumno ya existe en la base de datos.");
+    }
     throw error
   }
 }
@@ -306,7 +308,7 @@ export async function authenticateStudent(
       switch (error.type) {
         case 'CredentialsSignin':
           return 'Invalid credentials.';
-        default:
+          default:
           return 'Something went wrong.';
       }
     }
