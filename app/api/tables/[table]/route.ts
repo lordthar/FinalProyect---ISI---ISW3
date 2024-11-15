@@ -49,6 +49,7 @@ export async function GET(
                 headers: {
                     'Content-Disposition': `attachment; filename="${tableName}.xlsx"`,
                     'Content-Type': 'application/vnd.ms-excel',
+                    'Cache-Control': 'no-store',
                 }
             })
         }

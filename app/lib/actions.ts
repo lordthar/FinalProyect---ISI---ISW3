@@ -220,7 +220,7 @@ export async function getInforme() {
     throw new Error("DATABASE_URL no está definida en las variables de entorno");
 
   const sql = neon(process.env.DATABASE_URL);
-  const informe = await sql`SELECT * FROM informe;`
+  const informe = await sql`SELECT * FROM informe WHERE 1=1 AND NOW() > NOW() - INTERVAL '1 day';`
   return informe;
 }
 

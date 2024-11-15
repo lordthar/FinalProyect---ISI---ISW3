@@ -53,7 +53,7 @@ function Matricula() {
       triggerAlert('success', 'Matricula creada exitosamente!');
       limpiarCampos();
     } catch (error) {
-      triggerAlert('error', ''+ error);
+      triggerAlert('error', 'Ha ocurrido un error');
     }
   };
 
