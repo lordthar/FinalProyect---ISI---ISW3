@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticateStudent } from '../lib/actions';
+import { authenticateStudent } from '../lib/actionsAuth';
 
 
 export default function LoginForm() {
