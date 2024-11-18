@@ -32,7 +32,7 @@ export async function GET(
         // ** Using static data in this example
 
         // Loading example data 
-        const tableMatriculas = await getInforme();
+        const tableMatriculas = await getInforme(10, 5);
 
 
         const matriculasSheet = XLSX.utils.json_to_sheet(tableMatriculas)

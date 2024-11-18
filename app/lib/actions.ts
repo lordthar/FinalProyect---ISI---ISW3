@@ -212,12 +212,12 @@ export async function getMatriculas() {
   return matriculas;
 }
 
-export async function getInforme() {
+export async function getInforme(n1: number, n2: number) {
   if (!process.env.DATABASE_URL)
     throw new Error("DATABASE_URL no está definida en las variables de entorno");
 
   const sql = neon(process.env.DATABASE_URL);
-  const informe = await sql`SELECT * FROM informe WHERE 1=1 AND NOW() > NOW() - INTERVAL '1 day';`
+  const informe = await sql`SELECT * FROM informe WHERE 1=1 AND ${n1} > ${n2};`
   return informe;
 }
 
