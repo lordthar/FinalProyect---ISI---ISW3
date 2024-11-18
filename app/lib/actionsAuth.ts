@@ -1,3 +1,4 @@
+"use server"
 
 import { signIn } from '@/auth';
 import { signIn as signInA } from '@/authA';
